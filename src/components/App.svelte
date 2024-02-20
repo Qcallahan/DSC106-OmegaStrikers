@@ -26,11 +26,11 @@
             .attr('transform', `translate(${margin.left},${margin.top})`);
 
         const yScale = d3.scaleLinear()
-            .domain([d3.min(tempData, d => d.wins) - 100, d3.max(tempData, d => d.wins) + 100])
+            .domain([-100, 4500])
             .range([height, 0]);
 
         const xScale = d3.scaleLinear()
-            .domain([d3.min(tempData, d => d.losses) - 100, d3.max(tempData, d => d.losses) + 100])
+            .domain([-100, 4500])
             .range([0, width]);
 
         // Define color scale with 21 unique colors
