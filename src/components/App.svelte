@@ -3,6 +3,8 @@
     import * as d3 from 'd3';
     
     let tempData = [];
+    let forwardData = [];
+
     let selectedCharacters = new Set();
 
     onMount(async () => {
@@ -11,9 +13,14 @@
         tempData = d3.csvParse(csv, d3.autoType);
 
         createScatterPlot();
-    });
 
-    function createScatterPlot() {
+        const res2 = await fetch('average_forwards.csv'); 
+        const csv2 = await res2.text();
+        forwardData = d3.csvParse(csv2, d3.autoType);
+
+        createBarChart();
+    });
+   function createScatterPlot() {
         const margin = { top: 40, right: 40, bottom: 50, left: 60 };
         const width = 600 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
@@ -66,7 +73,7 @@
             .attr('cy', d => yScale(d.wins))
             .attr('r', 5)
             .style('fill', d => colorScale(d.most_played_character))
-            .style('opacity', d => selectedCharacters.has(d.most_played_character) ? 1 : 0.1)
+            .style('opacity', d => selectedCharacters.has(d.most_played_character) ? .8 : 0.05)
             .on('mouseover', handleMouseOver)
             .on('mouseout', handleMouseOut);
 
@@ -111,7 +118,7 @@
             }
 
             svg.selectAll('circle')
-                .style('opacity', d => selectedCharacters.has(d.most_played_character) ? 1 : 0.05);
+                .style('opacity', d => selectedCharacters.has(d.most_played_character) ? .8 : 0.05);
 
             circles.sort((a, b) => {
                 if (selectedCharacters.size === 0) return 0; // No selected characters, maintain order
@@ -126,15 +133,18 @@
                 }
                 return 0; // Other cases, maintain order
             });
+            
+            createBarChart(selectedCharacters);
         }
 
         function selectAll() {
             characterOptions.forEach(character => selectedCharacters.add(character));
 
             svg.selectAll('circle')
-                .style('opacity', 1);
+                .style('opacity', .8);
 
             buttons.style('background-color', '#66bb6a');
+            createBarChart(selectedCharacters);
         }
 
         function deselectAll() {
@@ -144,6 +154,7 @@
                 .style('opacity', 0.05);
 
             buttons.style('background-color', '');
+            createBarChart(selectedCharacters);
         }
 
         const tooltip = d3.select('body').append('div')
@@ -183,13 +194,65 @@
                 .style('opacity', 0)
                 .remove();
         }
-
-
     }
+
+    function createBarChart(selectedCharacters) {
+        const margin = { top: 40, right: 40, bottom: 70, left: 60 };
+        const width = 600 - margin.left - margin.right;
+        const height = 450 - margin.top - margin.bottom;
+
+        // Remove existing chart
+        d3.select('#bar-chart').selectAll('*').remove();
+
+        const svg = d3.select('#bar-chart')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .append('g')
+            .attr('transform', `translate(${margin.left},${margin.top})`);
+
+        let filteredData = forwardData;
+        if (selectedCharacters.size > 0) {
+            filteredData = forwardData.filter(d => selectedCharacters.has(d.striker));
+        }
+
+        const xScale = d3.scaleBand()
+            .domain(filteredData.map(d => d.striker))
+            .range([0, width])
+            .padding(0.1);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(filteredData, d => d.average_saves)])
+            .nice()
+            .range([height, 0]);
+
+        svg.selectAll('rect')
+            .data(filteredData)
+            .enter()
+            .append('rect')
+            .attr('x', d => xScale(d.striker))
+            .attr('y', d => yScale(d.average_saves))
+            .attr('width', xScale.bandwidth())
+            .attr('height', d => height - yScale(d.average_saves))
+            .attr('fill', '#69b3a2');
+
+        svg.append('g')
+            .attr('transform', `translate(0,${height})`)
+            .call(d3.axisBottom(xScale))
+            .selectAll('text')
+            .style('text-anchor', 'end')
+            .attr('transform', 'rotate(-45)');
+
+        svg.append('g')
+            .call(d3.axisLeft(yScale));
+    }
+
 </script>
 
 <main>
+    <svg id="scatter-plot"></svg>
+    <svg id="bar-chart"></svg>
 </main>
+
 
 <style>
     .tooltip {
