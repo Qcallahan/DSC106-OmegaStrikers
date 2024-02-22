@@ -266,11 +266,21 @@
             .attr('width', xScale.bandwidth())
             .attr('height', d => height - yScale(d.average_saves))
             .attr('fill', d => d.striker === "Global Average" ? "red" : "#69b3a2")
-            .on('mouseover', function (event, d) {
-            const imageName = Strikers[d.striker]; 
-            showImageAtCursor(event, imageName);
-        })
-        .on('mouseout', hideImage);
+            .on('mouseenter', function (event, d) {
+                const imageName = Strikers[d.striker]; 
+                showImageAtCursor(event, imageName);
+            })
+            .on('mouseleave', function () {
+                // Delay hiding the image slightly
+                if (isImageVisible) {
+                    clearTimeout(imageTimeout);
+                    imageTimeout = setTimeout(function () {
+                        hideImage();
+                        isImageVisible = false;
+                    }, 100);
+                }
+            });
+
 
         svg.append('g')
             .attr('transform', `translate(0,${height})`)
@@ -290,31 +300,42 @@
         createBarChart(selectedCharacters);
     }
 
+    // Function to show the image at an offset from the cursor position
     function showImageAtCursor(event, imageUrl) {
         console.log('Image URL:', imageUrl);
         const img = document.createElement('img');
         img.src = imageUrl;
         img.style.position = 'absolute';
-        img.style.top = `${event.clientY}px`;
-        img.style.left = `${event.clientX}px`;
+        
+        // Adjust the offset as needed
+        const offset = 10;
+        img.style.top = `${event.clientY + offset}px`;
+        img.style.left = `${event.clientX + offset}px`;
+        
         img.style.maxWidth = '100px'; // Adjust as needed
         img.id = 'character-image';
+        
         document.body.appendChild(img);
+
         function updateImagePosition(event) {
-            img.style.top = `${event.clientY}px`;
-            img.style.left = `${event.clientX}px`;
+            // Update the image position with the offset
+            img.style.top = `${event.clientY + offset}px`;
+            img.style.left = `${event.clientX + offset}px`;
+        }
+
+        function hideImage() {
+            document.removeEventListener('mousemove', updateImagePosition);
+            img.parentNode.removeChild(img); // Remove the image when the mouse leaves it
         }
 
         document.addEventListener('mousemove', updateImagePosition);
 
-        // Remove the event listener when the mouse leaves the image
-        img.addEventListener('mouseleave', () => {
-            document.removeEventListener('mousemove', updateImagePosition);
-            img.parentNode.removeChild(img); // Remove the image when the mouse leaves it
-        });
-    }
+        // Remove the event listener and hide the image when mouse leaves the chart area
+        svg.on('mouseleave', hideImage);
+    };
 
     function hideImage() {
+        console.log("aaaa");
         const img = document.getElementById('character-image');
         if (img) {
             img.parentNode.removeChild(img);
