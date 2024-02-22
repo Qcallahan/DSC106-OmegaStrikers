@@ -37,6 +37,8 @@
 
     const bg = 'CloseUp/Ahten_City-transformed.png';
 
+    console.log(bg)
+
     onMount(async () => {
         const res = await fetch('global.csv'); 
         const csv = await res.text();
