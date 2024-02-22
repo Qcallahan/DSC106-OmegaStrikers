@@ -82,7 +82,7 @@
         // Define color scale with 21 unique colors
         const colorScale = d3.scaleOrdinal()
             .domain(tempData.map(d => d.most_played_character))
-            .range(["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", "#1a55FF"]); // Add your 21 colors here
+            .range(["#97cf22", "#cb1f3f", "#98fffc", "#960b43", "#9ad2fe", "#ffff8d", "#81ebb0", "#ff81ff", "#201e43", "#ff036b", "#ffa05b", "#d5127c", "#ec7fea", "#c74f2d", "#82abf8", "#fed716", "#5471c4", "#68bcfa", "#716e90", "#67f9ff", "#f6d38b"]);
 
         svg.append('g')
             .attr('transform', `translate(0,${height})`)
