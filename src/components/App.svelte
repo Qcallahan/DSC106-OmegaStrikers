@@ -127,9 +127,28 @@
             .data(characterOptions)
             .enter()
             .append('button')
-            .text(d => d)
+            .style('background-color', d => selectedCharacters.has(d) ? '#66bb6a' : '')
             .on('click', toggleCharacter)
-            .style('background-color', d => selectedCharacters.has(d) ? '#66bb6a' : '');
+            .each(function(d) {
+                const button = d3.select(this);
+
+                const container = button.append('div')
+                    .style('display', 'flex')
+                    .style('flex-direction', 'column')
+                    .style('align-items', 'center');
+
+                const imageName = Strikers[d];
+                container.append('img')
+                    .attr('src', imageName)
+                    .attr('alt', d)
+                    .style('width', '50px') // Adjust the width as needed
+                    .style('height', '50px') // Adjust the height as needed
+                    .style('pointer-events', 'none'); // Make the image ignore pointer events
+
+                container.append('span')
+                    .text(d)
+                    .style('text-align', 'center');
+            });
 
 
         // Select All button
@@ -346,7 +365,7 @@
         if (img) {
             setTimeout(() => {
                 img.parentNode.removeChild(img);
-            }, 200);
+            }, 50);
         }
     }
 
