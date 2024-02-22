@@ -4,8 +4,34 @@
     
     let tempData = [];
     let forwardData = [];
-
+    let goalieData = [];
+    let currentData = [];
     let selectedCharacters = new Set();
+    let isForwards = true; 
+
+    const Strikers = {
+            CD_MagicalPlaymaker: '../assets/CloseUp/Ai.Mi.png',
+            CD_ShieldUser: '../assets/CloseUp/Asher.png',    
+            CD_AngelicSupport: '../assets/CloseUp/Atlas.png',
+            CD_NimbleBlaster: '../assets/CloseUp/Drek\'ar.png',
+            CD_StalwartProtector: '../assets/CloseUp/Dubu.png',
+            CD_EmpoweringEnchanter: '../assets/CloseUp/Era.png',
+            CD_TempoSniper: '../assets/CloseUp/Estelle.png',
+            CD_GravityMage: '../assets/CloseUp/Finii.png',
+            CD_FlexibleBrawler: '../assets/CloseUp/Juliette.png',
+            CD_CleverSummoner: '../assets/CloseUp/Juno.png',
+            CD_SpeedySkirmisher: '../assets/CloseUp/Kai.png',
+            CD_UmbrellaUser: '../assets/CloseUp/Kazan.png',
+            CD_ChaoticRocketeer: '../assets/CloseUp/Luna.png',
+            CD_DrumOni: '../assets/CloseUp/Mako.png',
+            CD_Healer: '../assets/CloseUp/Nao.png',
+            CD_EDMOni: '../assets/CloseUp/Octavia.png',
+            CD_WhipFighter: '../assets/CloseUp/Rasmus.png',
+            CD_ManipulatingMastermind: '../assets/CloseUp/Rune.png',
+            CD_RockOni: '../assets/CloseUp/Vyce.png',
+            CD_HulkingBeast: '../assets/CloseUp/X.png',
+            CD_FlashySwordsman: '../assets/CloseUp/Zentaro.png'
+        }
 
     onMount(async () => {
         const res = await fetch('global.csv'); 
@@ -13,10 +39,16 @@
         tempData = d3.csvParse(csv, d3.autoType);
 
         createScatterPlot();
+        
+        const resForward = await fetch('average_forwards.csv');
+        const csvForward = await resForward.text();
+        forwardData = d3.csvParse(csvForward, d3.autoType);
 
-        const res2 = await fetch('average_forwards.csv'); 
-        const csv2 = await res2.text();
-        forwardData = d3.csvParse(csv2, d3.autoType);
+        const resGoalie = await fetch('average_goalies.csv');
+        const csvGoalie = await resGoalie.text();
+        goalieData = d3.csvParse(csvGoalie, d3.autoType);
+
+        currentData = isForwards ? forwardData : goalieData;
 
         createBarChart();
     });
@@ -210,10 +242,10 @@
             .append('g')
             .attr('transform', `translate(${margin.left},${margin.top})`);
 
-        let filteredData = forwardData;
-        if (selectedCharacters.size > 0) {
-            filteredData = forwardData.filter(d => selectedCharacters.has(d.striker));
-        }
+        let filteredData = currentData.filter(d => selectedCharacters.has(d.striker) || d.striker === "Global Average");
+
+        // Sort the data based on average saves
+        filteredData.sort((a, b) => b.average_saves - a.average_saves);
 
         const xScale = d3.scaleBand()
             .domain(filteredData.map(d => d.striker))
@@ -233,7 +265,12 @@
             .attr('y', d => yScale(d.average_saves))
             .attr('width', xScale.bandwidth())
             .attr('height', d => height - yScale(d.average_saves))
-            .attr('fill', '#69b3a2');
+            .attr('fill', d => d.striker === "Global Average" ? "red" : "#69b3a2")
+            .on('mouseover', function (event, d) {
+            const imageName = Strikers[d.striker]; 
+            showImageAtCursor(event, imageName);
+        })
+        .on('mouseout', hideImage);
 
         svg.append('g')
             .attr('transform', `translate(0,${height})`)
@@ -246,10 +283,53 @@
             .call(d3.axisLeft(yScale));
     }
 
+
+    function switchData(event) {
+        isForwards = event.target.value === "forwards";
+        currentData = isForwards ? forwardData : goalieData;
+        createBarChart(selectedCharacters);
+    }
+
+    function showImageAtCursor(event, imageUrl) {
+        console.log('Image URL:', imageUrl);
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.style.position = 'absolute';
+        img.style.top = `${event.clientY}px`;
+        img.style.left = `${event.clientX}px`;
+        img.style.maxWidth = '100px'; // Adjust as needed
+        img.id = 'character-image';
+        document.body.appendChild(img);
+        function updateImagePosition(event) {
+            img.style.top = `${event.clientY}px`;
+            img.style.left = `${event.clientX}px`;
+        }
+
+        document.addEventListener('mousemove', updateImagePosition);
+
+        // Remove the event listener when the mouse leaves the image
+        img.addEventListener('mouseleave', () => {
+            document.removeEventListener('mousemove', updateImagePosition);
+            img.parentNode.removeChild(img); // Remove the image when the mouse leaves it
+        });
+    }
+
+    function hideImage() {
+        const img = document.getElementById('character-image');
+        if (img) {
+            img.parentNode.removeChild(img);
+        }
+    }
+
 </script>
 
 <main>
     <svg id="scatter-plot"></svg>
+    <select on:change={switchData}>
+        <option value="forwards">Forwards</option>
+        <option value="goalies">Goalies</option>
+    </select>
+
     <svg id="bar-chart"></svg>
 </main>
 
