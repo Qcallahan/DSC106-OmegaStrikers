@@ -12,27 +12,27 @@
     let selectedMetric = "average_saves";
 
     const Strikers = {
-            CD_MagicalPlaymaker: 'CloseUp/Ai.Mi.png',
-            CD_ShieldUser: 'CloseUp/Asher.png',    
-            CD_AngelicSupport: 'CloseUp/Atlas.png',
-            CD_NimbleBlaster: 'CloseUp/Drek\'ar.png',
-            CD_StalwartProtector: 'CloseUp/Dubu.png',
-            CD_EmpoweringEnchanter: 'CloseUp/Era.png',
-            CD_TempoSniper: 'CloseUp/Estelle.png',
-            CD_GravityMage: 'CloseUp/Finii.png',
-            CD_FlexibleBrawler: 'CloseUp/Juliette.png',
-            CD_CleverSummoner: 'CloseUp/Juno.png',
-            CD_SpeedySkirmisher: 'CloseUp/Kai.png',
-            CD_UmbrellaUser: 'CloseUp/Kazan.png',
-            CD_ChaoticRocketeer: 'CloseUp/Luna.png',
-            CD_DrumOni: 'CloseUp/Mako.png',
-            CD_Healer: 'CloseUp/Nao.png',
-            CD_EDMOni: 'CloseUp/Octavia.png',
-            CD_WhipFighter: 'CloseUp/Rasmus.png',
-            CD_ManipulatingMastermind: 'CloseUp/Rune.png',
-            CD_RockOni: 'CloseUp/Vyce.png',
-            CD_HulkingBeast: 'CloseUp/X.png',
-            CD_FlashySwordsman: 'CloseUp/Zentaro.png'
+            'Ai.Mi': 'CloseUp/Ai.Mi.png',
+            'Asher': 'CloseUp/Asher.png',
+            'Atlas': 'CloseUp/Atlas.png',
+            'Drek\'ar': 'CloseUp/Drek\'ar.png',
+            'Dubu': 'CloseUp/Dubu.png',
+            'Era': 'CloseUp/Era.png',
+            'Estelle': 'CloseUp/Estelle.png',
+            'Finii': 'CloseUp/Finii.png',
+            'Juliette': 'CloseUp/Juliette.png',
+            'Juno': 'CloseUp/Juno.png',
+            'Kai': 'CloseUp/Kai.png',
+            'Kazan': 'CloseUp/Kazan.png',
+            'Luna': 'CloseUp/Luna.png',
+            'Mako': 'CloseUp/Mako.png',
+            'Nao': 'CloseUp/Nao.png',
+            'Octavia': 'CloseUp/Octavia.png',
+            'Rasmus': 'CloseUp/Rasmus.png',
+            'Rune': 'CloseUp/Rune.png',
+            'Vyce': 'CloseUp/Vyce.png',
+            'X': 'CloseUp/X.png',
+            'Zentaro': 'CloseUp/Zentaro.png'
         }
 
     onMount(async () => {
@@ -41,7 +41,7 @@
         tempData = d3.csvParse(csv, d3.autoType);
 
         createScatterPlot();
-        
+
         const resForward = await fetch('average_forwards.csv');
         const csvForward = await resForward.text();
         forwardData = d3.csvParse(csvForward, d3.autoType);
@@ -58,6 +58,7 @@
         });
 
         createBarChart();
+
     });
    function createScatterPlot() {
         const margin = { top: 40, right: 40, bottom: 50, left: 60 };
