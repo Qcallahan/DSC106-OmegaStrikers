@@ -253,6 +253,7 @@
                 .style('opacity', 0)
                 .remove();
         }
+        
     }
 
     function createBarChart(selectedCharacters) {
@@ -374,11 +375,7 @@
 </script>
 
 <main>
-    <svg id="scatter-plot"></svg>
-    <select on:change={switchData}>
-        <option value="forwards">Forwards</option>
-        <option value="goalies">Goalies</option>
-    </select>
+    <svg id="bar-chart"></svg>
     <select id="metric-dropdown">
         <option value="average_saves">Average Saves</option>
         <option value="average_scores">Average Scores</option>
@@ -387,7 +384,11 @@
         <option value="average_mvps">Average MVPs</option>
         <option value="win_rate">Win Rate</option>
     </select>
-    <svg id="bar-chart"></svg>
+        <select on:change={switchData}>
+        <option value="forwards">Forwards</option>
+        <option value="goalies">Goalies</option>
+    </select>
+    <svg id="scatter-plot"></svg>
 </main>
 
 
