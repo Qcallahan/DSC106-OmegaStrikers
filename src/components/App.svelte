@@ -12,27 +12,27 @@
     let selectedMetric = "average_saves";
 
     const Strikers = {
-            CD_MagicalPlaymaker: '../assets/CloseUp/Ai.Mi.png',
-            CD_ShieldUser: '../assets/CloseUp/Asher.png',    
-            CD_AngelicSupport: '../assets/CloseUp/Atlas.png',
-            CD_NimbleBlaster: '../assets/CloseUp/Drek\'ar.png',
-            CD_StalwartProtector: '../assets/CloseUp/Dubu.png',
-            CD_EmpoweringEnchanter: '../assets/CloseUp/Era.png',
-            CD_TempoSniper: '../assets/CloseUp/Estelle.png',
-            CD_GravityMage: '../assets/CloseUp/Finii.png',
-            CD_FlexibleBrawler: '../assets/CloseUp/Juliette.png',
-            CD_CleverSummoner: '../assets/CloseUp/Juno.png',
-            CD_SpeedySkirmisher: '../assets/CloseUp/Kai.png',
-            CD_UmbrellaUser: '../assets/CloseUp/Kazan.png',
-            CD_ChaoticRocketeer: '../assets/CloseUp/Luna.png',
-            CD_DrumOni: '../assets/CloseUp/Mako.png',
-            CD_Healer: '../assets/CloseUp/Nao.png',
-            CD_EDMOni: '../assets/CloseUp/Octavia.png',
-            CD_WhipFighter: '../assets/CloseUp/Rasmus.png',
-            CD_ManipulatingMastermind: '../assets/CloseUp/Rune.png',
-            CD_RockOni: '../assets/CloseUp/Vyce.png',
-            CD_HulkingBeast: '../assets/CloseUp/X.png',
-            CD_FlashySwordsman: '../assets/CloseUp/Zentaro.png'
+            CD_MagicalPlaymaker: 'CloseUp/Ai.Mi.png',
+            CD_ShieldUser: 'CloseUp/Asher.png',    
+            CD_AngelicSupport: 'CloseUp/Atlas.png',
+            CD_NimbleBlaster: 'CloseUp/Drek\'ar.png',
+            CD_StalwartProtector: 'CloseUp/Dubu.png',
+            CD_EmpoweringEnchanter: 'CloseUp/Era.png',
+            CD_TempoSniper: 'CloseUp/Estelle.png',
+            CD_GravityMage: 'CloseUp/Finii.png',
+            CD_FlexibleBrawler: 'CloseUp/Juliette.png',
+            CD_CleverSummoner: 'CloseUp/Juno.png',
+            CD_SpeedySkirmisher: 'CloseUp/Kai.png',
+            CD_UmbrellaUser: 'CloseUp/Kazan.png',
+            CD_ChaoticRocketeer: 'CloseUp/Luna.png',
+            CD_DrumOni: 'CloseUp/Mako.png',
+            CD_Healer: 'CloseUp/Nao.png',
+            CD_EDMOni: 'CloseUp/Octavia.png',
+            CD_WhipFighter: 'CloseUp/Rasmus.png',
+            CD_ManipulatingMastermind: 'CloseUp/Rune.png',
+            CD_RockOni: 'CloseUp/Vyce.png',
+            CD_HulkingBeast: 'CloseUp/X.png',
+            CD_FlashySwordsman: 'CloseUp/Zentaro.png'
         }
 
     onMount(async () => {
@@ -240,6 +240,11 @@
         const width = 600 - margin.left - margin.right;
         const height = 450 - margin.top - margin.bottom;
 
+        const colorScale = d3.scaleOrdinal()
+            .domain(tempData.map(d => d.most_played_character))
+            .range(["#97cf22", "#cb1f3f", "#98fffc", "#960b43", "#9ad2fe", "#ffff8d", "#81ebb0", "#ff81ff", "#201e43", "#ff036b", "#ffa05b", "#d5127c", "#ec7fea", "#c74f2d", "#82abf8", "#fed716", "#5471c4", "#68bcfa", "#716e90", "#67f9ff", "#f6d38b"]);
+
+
         // Remove existing chart
         d3.select('#bar-chart').selectAll('*').remove();
 
@@ -272,7 +277,13 @@
             .attr('y', d => yScale(d[selectedMetric]))
             .attr('width', xScale.bandwidth())
             .attr('height', d => height - yScale(d[selectedMetric]))
-            .attr('fill', d => d.striker === "Global Average" ? "red" : "#69b3a2")
+            .attr('fill', d => {
+                if (d.striker === "Global Average") {
+                    return "red";
+                } else {
+                    return colorScale(d.striker);
+                }
+            })
             .on('mouseenter', function (event, d) {
                 if (Strikers.hasOwnProperty(d.striker)) {
                     const imageName = Strikers[d.striker]; 
