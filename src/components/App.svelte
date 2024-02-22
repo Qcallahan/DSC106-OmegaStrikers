@@ -35,6 +35,8 @@
             'Zentaro': 'CloseUp/Zentaro.png'
         }
 
+    const bg = 'CloseUp/Ahten_City-transformed.png';
+
     onMount(async () => {
         const res = await fetch('global.csv'); 
         const csv = await res.text();
