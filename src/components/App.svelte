@@ -88,7 +88,7 @@
         svg.append("rect")
             .attr("width", "100%")
             .attr("height", "100%")
-            .attr("fill", "#4a90e2")
+            .attr("fill", "#ffffff")
             .attr("fill-opacity", "0.7")
             .attr('transform', "translate(-50,-10)");
         
@@ -300,7 +300,7 @@
         svg.append("rect")
             .attr("width", "100%")
             .attr("height", "100%")
-            .attr("fill", "#4a90e2")
+            .attr("fill", "#ffffff")
             .attr("fill-opacity", "0.7")
             .attr('transform', "translate(-50,-10)");
 
