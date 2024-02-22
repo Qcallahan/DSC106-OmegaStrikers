@@ -326,8 +326,10 @@
                     const imageName = Strikers[d.striker]; 
                     showImageAtCursor(event, imageName);
                 }
-            })
-        .on('mouseout', hideImage);
+            });
+
+        svg.selectAll('rect')
+            .on('mouseleave', hideImage);
 
         svg.append('g')
             .attr('transform', `translate(0,${height})`)
@@ -353,28 +355,30 @@
         if (!imageUrl) {
             return; // Exit function if imageUrl is not provided
         }
-        
+
         console.log('Image URL:', imageUrl);
         const img = document.createElement('img');
         img.src = imageUrl;
         img.style.position = 'absolute';
-        img.style.top = `${event.clientY}px`;
-        img.style.left = `${event.clientX}px`;
+        img.style.top = `${event.clientY + window.scrollY}px`; // Adjusted to consider scroll position
+        img.style.left = `${event.clientX + window.scrollX}px`; // Adjusted to consider scroll position
         img.style.maxWidth = '100px'; // Adjust as needed
+        img.style.pointerEvents = 'none'; // Ignore pointer events
         img.id = 'character-image';
         
         document.body.appendChild(img);
+
         function updateImagePosition(event) {
-            img.style.top = `${event.clientY}px`;
-            img.style.left = `${event.clientX}px`;
+            img.style.top = `${event.clientY + window.scrollY}px`; // Adjusted to consider scroll position
+            img.style.left = `${event.clientX + window.scrollX}px`; // Adjusted to consider scroll position
         }
 
         document.addEventListener('mousemove', updateImagePosition);
 
-        // Remove the event listener when the mouse leaves the image
-        img.addEventListener('mouseleave', () => {
+        // Remove the event listener when the mouse leaves the bars
+        document.getElementById('bar-chart').addEventListener('mouseleave', () => {
             document.removeEventListener('mousemove', updateImagePosition);
-            img.parentNode.removeChild(img); // Remove the image when the mouse leaves it
+            img.parentNode.removeChild(img); // Remove the image when the mouse leaves the bars
         });
     }
 
@@ -417,7 +421,7 @@
     <svg id="bar-chart"></svg>
     <svg id="scatter-plot"></svg>
     <div id="tooltip" style="width: 150px; height: 80px;"></div>
-</main>
+    </main>
 
 
 
