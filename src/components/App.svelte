@@ -152,15 +152,15 @@
 
 
         // Select All button
-        d3.select('main')
-            .insert('button', 'svg')
+        d3.select('#buttons-container')
+            .append('button')
             .text('Select All')
             .on('click', selectAll)
             .style('background-color', '');
 
         // Deselect All button
-        d3.select('main')
-            .insert('button', 'svg')
+        d3.select('#buttons-container')
+            .append('button')
             .text('Deselect All')
             .on('click', deselectAll)
             .style('background-color', '');
@@ -216,7 +216,7 @@
             createBarChart(selectedCharacters);
         }
 
-        const tooltip = d3.select('body').append('div')
+        const tooltip = d3.select('tooltip').append('div')
             .attr('class', 'tooltip')
             .style('opacity', 0);
 
@@ -374,35 +374,46 @@
 
 </script>
 
-<main>
-    <svg id="bar-chart"></svg>
-    <select id="metric-dropdown">
-        <option value="average_saves">Average Saves</option>
-        <option value="average_scores">Average Scores</option>
-        <option value="average_assists">Average Assists</option>
-        <option value="average_knockouts">Average Knockouts</option>
-        <option value="average_mvps">Average MVPs</option>
-        <option value="win_rate">Win Rate</option>
-    </select>
+<main style="display: flex; flex-direction: column; align-items: center;">
+<div class="band" style="margin-bottom: 10px;"> <!-- Added margin-bottom -->
+        <p>Use the drop down menus to change what stat, or whether you are looking at stats from forwards or goalies</p>
+        <p>Click a striker to add or remove them from the graph</p>
+        <p>You can scroll down to see a graph of the top 10k players by their wins and loses :)</p>
+        </div>
+    <div style="display: flex; justify-content: space-around; width: 100%;">
+        <div id="buttons-container"></div>
+        <select id="metric-dropdown">
+            <option value="average_saves">Average Saves</option>
+            <option value="average_scores">Average Scores</option>
+            <option value="average_assists">Average Assists</option>
+            <option value="average_knockouts">Average Knockouts</option>
+            <option value="average_mvps">Average MVPs</option>
+            <option value="win_rate">Win Rate</option>
+        </select>
         <select on:change={switchData}>
-        <option value="forwards">Forwards</option>
-        <option value="goalies">Goalies</option>
-    </select>
+            <option value="forwards">Forwards</option>
+            <option value="goalies">Goalies</option>
+        </select>
+    </div>
+    <svg id="bar-chart"></svg>
     <svg id="scatter-plot"></svg>
+    <div id="tooltip" style="width: 150px; height: 80px;"></div>
 </main>
+
+
 
 
 <style>
     .tooltip {
-        position: absolute;
-        text-align: center;
-        width: 120px;
-        height: auto;
-        padding: 6px;
-        font: 12px sans-serif;
-        background: #ddd;
-        border: 0px;
-        border-radius: 8px;
-        pointer-events: none;
-    }
+    position: absolute;
+    text-align: center;
+    width: 150px; /* Fixed width */
+    height: auto;
+    padding: 6px;
+    font: 12px sans-serif;
+    background: #ddd;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
 </style>

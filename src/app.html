@@ -2,100 +2,93 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
-    <meta name="viewport" content="width=device-width" />
-    %sveltekit.head%
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+	<meta name="viewport" content="width=device-width" />
+	%sveltekit.head%
 
-    <style>
-        html {
-            background-color: #f8f7f6;
-        }
+	<style>
+		html {
+			background-color: #eaf2f8;
+			/* Light blue background */
+		}
 
-        main {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: flex-start;
-        }
+		main {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-items: flex-start;
+		}
 
-        main>svg {
-            flex: 1 1 45%;
-            max-width: 45%;
-            margin-bottom: 20px;
-        }
+		main>svg {
+			flex: 1 1 45%;
+			max-width: 45%;
+			margin-bottom: 20px;
+		}
 
-        main .buttons-container {
-            margin-bottom: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+		main .buttons-container {
+			margin-bottom: 10px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
 
-        main .buttons-container button {
-            margin: 5px;
-            padding: 10px;
-            width: 120px;
-        }
-    </style>
+		main .buttons-container button {
+			margin: 5px;
+			padding: 10px;
+			width: 120px;
+			background-color: #4a90e2;
+			/* Dark blue button background */
+			color: #ffffff;
+			/* White button text */
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		main .buttons-container button:hover {
+			background-color: #357bd8;
+			/* Darker shade of blue on hover */
+		}
+
+		main .buttons-container button.selected {
+			background-color: #1769aa;
+			/* Even darker shade of blue for selected button */
+		}
+
+		.band {
+			background-color: #26577a;
+			/* Dark blue band background */
+			color: #ffffff;
+			/* White text color */
+			text-align: center;
+			padding: 20px;
+			margin-top: 20px;
+		}
+
+		.tooltip {
+			position: absolute;
+			text-align: center;
+			width: 150px; /* Fixed width */
+			height: auto;
+			padding: 6px;
+			font: 12px sans-serif;
+			background: #ddd;
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+}
+	</style>
 </head>
 
 <body data-sveltekit-preload-data="hover">
-    <div style="display: contents">
-        %sveltekit.body%
-        <script>
-            const characterOptions = [
-                'Ai.Mi', 'Asher', 'Atlas', 'Drek\'ar', 'Dubu', 'Era', 'Estelle', 'Finii',
-                'Juliette', 'Juno', 'Kai', 'Kazan', 'Luna', 'Mako', 'Nao', 'Octavia',
-                'Rasmus', 'Rune', 'Vyce', 'X', 'Zentaro'
-            ];
-
-            const Strikers = {
-                'Ai.Mi': 'CloseUp/Ai.Mi.png',
-                'Asher': 'CloseUp/Asher.png',
-                'Atlas': 'CloseUp/Atlas.png',
-                'Drek\'ar': 'CloseUp/Drek\'ar.png',
-                'Dubu': 'CloseUp/Dubu.png',
-                'Era': 'CloseUp/Era.png',
-                'Estelle': 'CloseUp/Estelle.png',
-                'Finii': 'CloseUp/Finii.png',
-                'Juliette': 'CloseUp/Juliette.png',
-                'Juno': 'CloseUp/Juno.png',
-                'Kai': 'CloseUp/Kai.png',
-                'Kazan': 'CloseUp/Kazan.png',
-                'Luna': 'CloseUp/Luna.png',
-                'Mako': 'CloseUp/Mako.png',
-                'Nao': 'CloseUp/Nao.png',
-                'Octavia': 'CloseUp/Octavia.png',
-                'Rasmus': 'CloseUp/Rasmus.png',
-                'Rune': 'CloseUp/Rune.png',
-                'Vyce': 'CloseUp/Vyce.png',
-                'X': 'CloseUp/X.png',
-                'Zentaro': 'CloseUp/Zentaro.png'
-            };
-
-            const main = document.querySelector('main');
-            const buttonsContainer = document.createElement('div');
-            buttonsContainer.className = 'buttons-container';
-            main.appendChild(buttonsContainer);
-
-            characterOptions.forEach(character => {
-                const button = document.createElement('button');
-                const imageName = Strikers[character];
-                button.innerHTML = `<img src="${imageName}" alt="${character}" style="width: 50px; height: 50px; pointer-events: none;"><br>${character}`;
-                button.onclick = () => toggleCharacter(character);
-                buttonsContainer.appendChild(button);
-            });
-
-            function toggleCharacter(character) {
-                const selected = document.querySelector('.selected');
-                if (selected) selected.classList.remove('selected');
-                const button = buttonsContainer.querySelector(`button:nth-child(${characterOptions.indexOf(character) + 1})`);
-                button.classList.add('selected');
-                // Call your function to handle character toggle here
-            }
-        </script>
-    </div>
+	<div style="background-color: #26577a; padding: 20px; text-align: center;">
+		<h1 style="color: #ffffff;">Omega Strikers Stats</h1>
+		<h3 style="color: #ffffff;">which striker is the best?</h3>
+	</div>
+	<div style="display: contents">
+		%sveltekit.body%
+	</div>
 </body>
 
 </html>
