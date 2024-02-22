@@ -266,10 +266,12 @@
             .attr('width', xScale.bandwidth())
             .attr('height', d => height - yScale(d.average_saves))
             .attr('fill', d => d.striker === "Global Average" ? "red" : "#69b3a2")
-            .on('mouseover', function (event, d) {
-            const imageName = Strikers[d.striker]; 
-            showImageAtCursor(event, imageName);
-        })
+            .on('mouseenter', function (event, d) {
+                if (Strikers.hasOwnProperty(d.striker)) {
+                    const imageName = Strikers[d.striker]; 
+                    showImageAtCursor(event, imageName);
+                }
+            })
         .on('mouseout', hideImage);
 
         svg.append('g')
