@@ -384,9 +384,10 @@
 
 <main style="display: flex; flex-direction: column; align-items: center;">
 <div class="band" style="margin-bottom: 10px;"> <!-- Added margin-bottom -->
-        <p>Use the drop down menus to change what stat, or whether you are looking at stats from forwards or goalies</p>
-        <p>Click a striker to add or remove them from the graph</p>
-        <p>You can scroll down to see a graph of the top 10k players by their wins and loses :)</p>
+        <p> Welcome to our website :), here you can explore the stats of all of the strikers from the niche indie game omega strikers</p>
+        <p>Use the drop down menus to change what stat you are comparing, or whether you are looking at stats from forwards or goalies</p>
+        <p>click a striker to add or remove them from the graph</p>
+        <p>You can scroll down to see a graph of the top 10k players by their wins and loses (and hover over them for more details) :)</p>
         </div>
     <div style="display: flex; justify-content: space-around; width: 100%;">
         <div id="buttons-container"></div>
