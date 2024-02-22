@@ -323,12 +323,10 @@
 
 
     function hideImage() {
-        const img = document.getElementById('character-image');
-        if (img) {
-            setTimeout(() => {
+            const img = document.getElementById('character-image');
+            if (img) {
                 img.parentNode.removeChild(img);
-            }, 200); // Adjust delay time as needed
-        }
+            }
     }
 
 </script>
@@ -339,7 +337,14 @@
         <option value="forwards">Forwards</option>
         <option value="goalies">Goalies</option>
     </select>
-
+    <select id="metric-dropdown">
+        <option value="average_saves">Average Saves</option>
+        <option value="average_scores">Average Scores</option>
+        <option value="average_assists">Average Assists</option>
+        <option value="average_knockouts">Average Knockouts</option>
+        <option value="average_mvps">Average MVPs</option>
+        <option value="win_rate">Win Rate</option>
+    </select>
     <svg id="bar-chart"></svg>
 </main>
 
