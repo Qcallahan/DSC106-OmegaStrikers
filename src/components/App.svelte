@@ -84,6 +84,13 @@
         const colorScale = d3.scaleOrdinal()
             .domain(tempData.map(d => d.most_played_character))
             .range(["#97cf22", "#cb1f3f", "#98fffc", "#960b43", "#9ad2fe", "#ffff8d", "#81ebb0", "#ff81ff", "#201e43", "#ff036b", "#ffa05b", "#d5127c", "#ec7fea", "#c74f2d", "#82abf8", "#fed716", "#5471c4", "#68bcfa", "#716e90", "#67f9ff", "#f6d38b"]);
+
+        svg.append("rect")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("fill", "#ffffff")
+            .attr("fill-opacity", "0.9")
+            .attr('transform', "translate(-50,-10)");
         
         svg.append('g')
             .attr('transform', `translate(0,${height})`)
