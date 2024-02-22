@@ -342,10 +342,12 @@
 
 
     function hideImage() {
-            const img = document.getElementById('character-image');
-            if (img) {
+        const img = document.getElementById('character-image');
+        if (img) {
+            setTimeout(() => {
                 img.parentNode.removeChild(img);
-            }
+            }, 200);
+        }
     }
 
 
