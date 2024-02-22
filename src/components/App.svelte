@@ -9,6 +9,8 @@
     let selectedCharacters = new Set();
     let isForwards = true; 
 
+    let selectedMetric = "average_saves";
+
     const Strikers = {
             CD_MagicalPlaymaker: '../assets/CloseUp/Ai.Mi.png',
             CD_ShieldUser: '../assets/CloseUp/Asher.png',    
@@ -49,6 +51,11 @@
         goalieData = d3.csvParse(csvGoalie, d3.autoType);
 
         currentData = isForwards ? forwardData : goalieData;
+
+        document.getElementById("metric-dropdown").addEventListener("change", function(event) {
+            selectedMetric = event.target.value;
+            createBarChart(selectedCharacters);
+        });
 
         createBarChart();
     });
@@ -245,7 +252,7 @@
         let filteredData = currentData.filter(d => selectedCharacters.has(d.striker) || d.striker === "Global Average");
 
         // Sort the data based on average saves
-        filteredData.sort((a, b) => b.average_saves - a.average_saves);
+        filteredData.sort((a, b) => b[selectedMetric] - a[selectedMetric]);
 
         const xScale = d3.scaleBand()
             .domain(filteredData.map(d => d.striker))
@@ -253,7 +260,7 @@
             .padding(0.1);
 
         const yScale = d3.scaleLinear()
-            .domain([0, d3.max(filteredData, d => d.average_saves)])
+            .domain([0, d3.max(filteredData, d => d[selectedMetric])])
             .nice()
             .range([height, 0]);
 
@@ -262,9 +269,9 @@
             .enter()
             .append('rect')
             .attr('x', d => xScale(d.striker))
-            .attr('y', d => yScale(d.average_saves))
+            .attr('y', d => yScale(d[selectedMetric]))
             .attr('width', xScale.bandwidth())
-            .attr('height', d => height - yScale(d.average_saves))
+            .attr('height', d => height - yScale(d[selectedMetric]))
             .attr('fill', d => d.striker === "Global Average" ? "red" : "#69b3a2")
             .on('mouseenter', function (event, d) {
                 if (Strikers.hasOwnProperty(d.striker)) {
@@ -328,6 +335,8 @@
                 img.parentNode.removeChild(img);
             }
     }
+
+
 
 </script>
 
